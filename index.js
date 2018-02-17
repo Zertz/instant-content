@@ -1,6 +1,6 @@
 const bodyParser = require("body-parser");
 const express = require("express");
-const stripe = require("stripe")("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
+const stripe = require("stripe")("sk_test_qzoNcAG1y6ihyCZq0V7ZXkyC");
 
 const app = express();
 
@@ -8,11 +8,13 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 app.post("/", async (req, res) => {
+  const { amount, source } = req.body;
+
   try {
     const charge = await stripe.charges.create({
-      amount: 999,
+      amount,
       currency: "cad",
-      source: req.body.source
+      source
     });
 
     res.status(200).json(charge);
